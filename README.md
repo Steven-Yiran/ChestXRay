@@ -1,1 +1,2 @@
-this is the repo for cs701 project
+# Chest X-Ray Diagnosis Webapp
+## team member: Steven & Luka
