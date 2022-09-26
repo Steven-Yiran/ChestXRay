@@ -6,3 +6,6 @@ Sep 20th
 
 Sep 24th
 - Created html homepage
+
+Sep 26th
+- Downloaded chest xray dataset
