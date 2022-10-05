@@ -16,3 +16,7 @@ Oct 1st
     - Need to properly allow main.ejs to read style.css as current implementation does not work.
 - Copied index.js from afformentioned guide and tweaked it a little.
 - Script has gone mostly undone, may be a focus for later meet-ups
+
+Oct 5th
+1. fixed css not render bugs
+2. added routes files and router imports
