@@ -48,6 +48,7 @@ body {
 .row {
   display: flex;
   flex-wrap: wrap;
+  height: 55vw;
 }
 
 /* Create two unequal columns that sits next to each other */

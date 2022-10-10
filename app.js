@@ -1,27 +1,52 @@
 // Requiring module
-const express = require("express");
-const app = express();
-const path = require("path")
+var http = require('http'),
+    path = require('path'),
+    express = require('express'),
+    formidable = require('formidable'),
+    multer = require("multer"),
+    fs = require("fs");
+    bodyParser = require('body-parser');
 
-const indexRouter = require("./routes/index");
-const aboutRouter = require("./routes/about");
+// create global app project
+var app = express();
 
-  
-// Set public as static directory
+// normal express configs
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
-app.set('views', path.join(__dirname, '/views'))
-  
+
 // Use ejs as template engine
 app.set('view engine', 'ejs');
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
-app.use("/", indexRouter);
-app.use("/about", aboutRouter)
-  
+app.use(require("./routes"));
+
+
+const upload = multer({
+  dest: "uploads/"
+})
+
+const handleError = (err, res) => {
+  res
+    .status(500)
+    .contentType("text/plain")
+    .end("Something went wrong!");
+}
+
+app.post('/upload', upload.single("image"), (req, res) => {
+  const tempPath = req.file.path;
+  const targetPath = path.join(__dirname, "./uploads/image.png");
+
+  fs.rename(tempPath, targetPath, err => {
+    if (err) return handleError(err, res);
+
+    res
+      .status(200)
+      .contentType("text/plain")
+      .end("File uploaded!");
+  });
+});
+
 // Server setup
 app.listen(3000, () => {
   console.log("The server started running on port 3000") 
 });
-
-module.exports = app;
