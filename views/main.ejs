@@ -16,9 +16,6 @@
 
 
     <div class="navbar">
-        <a href="#">Link</a>
-        <a href="#">Link</a>
-        <a href="#">Link</a>
         <a href="/about" class="right">About</a>
     </div>
     
@@ -28,10 +25,15 @@
             <p>Diagnosis Info display</p>
         </div>
         <div class="main">
-            <form action="/action_page.php">
-                <input type="file" id="myFile"><br><br>
-                <input type="submit">
-            </form>
+            <div class="upload-div">
+                <input type="file" id="img-selector" name="image" accept=".jpg, .jpeg, .png">
+                <button onclick="resetImage()">Reset</button>
+            </div>
+            <!-- <form method="post" action="/upload" enctype="multipart/form-data">
+                <label for="file">Choose chest x-ray image to upload</label><br><br>
+                <input type="file" id="img-selector" name="image" accept=".jpg, .jpeg, .png"><br><br>
+                <input type="submit" value="Run Inference"/>
+            </form> -->
             <div class="img-display">
                 <img id="output">
             </div>
