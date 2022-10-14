@@ -28,13 +28,8 @@
             <div class="upload-div">
                 <input type="file" id="img-selector" name="image" accept=".jpg, .jpeg, .png">
                 <button onclick="resetImage()">Reset</button>
+                <button onclick="predict()">Predict</button>
             </div>
-            <button onclick="predict()">Predict</button>
-            <!-- <form method="post" action="/upload" enctype="multipart/form-data">
-                <label for="file">Choose chest x-ray image to upload</label><br><br>
-                <input type="file" id="img-selector" name="image" accept=".jpg, .jpeg, .png"><br><br>
-                <input type="submit" value="Run Inference"/>
-            </form> -->
             <div class="img-display">
                 <img id="output">
             </div>
@@ -48,15 +43,9 @@
     </div> 
     
     <script src="script.js"></script>
+    <!-- Load TensorFlow.js. This is required to use MobileNet. -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.1"> </script>
+    <!-- Load the MobileNet model. -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0"> </script>
 </body>
-</html> 
-
-<!-- Load TensorFlow.js. This is required to use MobileNet. -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.1"> </script>
-<!-- Load the MobileNet model. -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0"> </script>
-
-<!-- Place your code in the script tag below. You can also use an external .js file -->
-<!-- <script>
-
-</script> -->
+</html>

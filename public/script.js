@@ -1,8 +1,4 @@
 //for running events and functions
-/*
-tf.loadLayersModel("jsmodel/model.json").then(model => {
-	this._model = model;
-})*/
 const fileSelector = document.getElementById('img-selector');
 const output = document.getElementById('output');
 
@@ -25,11 +21,10 @@ fileSelector.addEventListener('change', async event => {
 
 
 function predict() {
-  img = document.getElementById("output");
   // Load the model.
   mobilenet.load().then(model => {
     // Classify the image.
-    model.classify(img).then(predictions => {
+    model.classify(output).then(predictions => {
       console.log('Predictions: ');
       console.log(predictions);
     });
@@ -39,3 +34,8 @@ function predict() {
 function resetImage(image) {
   output.src = '';
 }
+
+/*
+tf.loadLayersModel("jsmodel/model.json").then(model => {
+	this._model = model;
+})*/
