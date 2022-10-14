@@ -2,10 +2,11 @@
 var http = require('http'),
     path = require('path'),
     express = require('express'),
-    formidable = require('formidable'),
-    multer = require("multer"),
+    //multer = require("multer"),
     fs = require("fs");
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    mobilenet = require('node_modules/@tensorflow-models/mobilenet');
+
 
 // create global app project
 var app = express();
@@ -21,9 +22,9 @@ app.use(express.json());
 app.use(require("./routes"));
 
 
-const upload = multer({
-  dest: "uploads/"
-})
+// const upload = multer({
+//   dest: "uploads/"
+// })
 
 const handleError = (err, res) => {
   res
@@ -32,19 +33,19 @@ const handleError = (err, res) => {
     .end("Something went wrong!");
 }
 
-app.post('/upload', upload.single("image"), (req, res) => {
-  const tempPath = req.file.path;
-  const targetPath = path.join(__dirname, "./uploads/image.png");
+// app.post('/upload', upload.single("image"), (req, res) => {
+//   const tempPath = req.file.path;
+//   const targetPath = path.join(__dirname, "./uploads/image.png");
 
-  fs.rename(tempPath, targetPath, err => {
-    if (err) return handleError(err, res);
+//   fs.rename(tempPath, targetPath, err => {
+//     if (err) return handleError(err, res);
 
-    res
-      .status(200)
-      .contentType("text/plain")
-      .end("File uploaded!");
-  });
-});
+//     res
+//       .status(200)
+//       .contentType("text/plain")
+//       .end("File uploaded!");
+//   });
+// });
 
 // Server setup
 app.listen(3000, () => {

@@ -29,6 +29,7 @@
                 <input type="file" id="img-selector" name="image" accept=".jpg, .jpeg, .png">
                 <button onclick="resetImage()">Reset</button>
             </div>
+            <button onclick="predict()">Predict</button>
             <!-- <form method="post" action="/upload" enctype="multipart/form-data">
                 <label for="file">Choose chest x-ray image to upload</label><br><br>
                 <input type="file" id="img-selector" name="image" accept=".jpg, .jpeg, .png"><br><br>
@@ -37,9 +38,11 @@
             <div class="img-display">
                 <img id="output">
             </div>
+            
         </div>
     </div>
-  
+    <!-- Replace this with your image. Make sure CORS settings allow reading the image! -->
+    <!--<img id="img" src="cat.jpg"></img>-->
     <div class="footer">
         <h2>Footer</h2>
     </div> 
@@ -47,3 +50,13 @@
     <script src="script.js"></script>
 </body>
 </html> 
+
+<!-- Load TensorFlow.js. This is required to use MobileNet. -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.1"> </script>
+<!-- Load the MobileNet model. -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0"> </script>
+
+<!-- Place your code in the script tag below. You can also use an external .js file -->
+<!-- <script>
+
+</script> -->
