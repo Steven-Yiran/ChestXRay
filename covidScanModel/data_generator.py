@@ -1,3 +1,6 @@
+"""
+Split data into positive and negative classes
+"""
 import torchxrayvision as xrv
 import os
 import matplotlib.pyplot as plt
@@ -41,9 +44,7 @@ def split_dataset(dir_path, dataset):
 
 
 def read_img_file(path):
-    """
-    read as greyscale image
-    """
+    """read as greyscale image"""
     im = Image.open(path).convert("L")
     return im
 
@@ -78,18 +79,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-# traindata = keras.utils.image_dataset_from_directory(
-#     "./data",
-#     labels='inferred'
-# )
-
-# # visualize an image
-# data = traindata.take(1)
-# images, labels = list(data)[0]
-# images = images.numpy()
-# image = images[0]
-# print("Dimension of the X-RAY scan is:", image.shape)
-# plt.imsave("foo.png", np.squeeze(image[:, :, 2]))
