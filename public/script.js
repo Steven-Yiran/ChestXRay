@@ -27,6 +27,9 @@ function predict() {
     model.classify(output).then(predictions => {
       console.log('Predictions: ');
       console.log(predictions);
+      for (let val = 0; val < predictions.length; val++) {
+        document.getElementById("diag_info").innerHTML += predictions[val]["className"] + ": " + predictions[val]["probability"] + "\n";
+      }
     });
   });
 }

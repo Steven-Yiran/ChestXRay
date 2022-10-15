@@ -59,6 +59,13 @@ body {
   padding: 20px; /* Some padding */
 }
 
+/* Create a box to surround the diagnosis information within the sidebar */
+.boxed {
+  flex: 30%;
+  border: 1px solid black;
+  padding: 15px;
+}
+
 /* Main column */
 .main {
   flex: 70%; /* Set the width of the main content */
