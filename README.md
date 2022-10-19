@@ -1,4 +1,10 @@
 To run model training sequnece:
- '{ python3 model.py }'
+```
+python3 model.py
+```
+
 To run data generation pipeline:
- '{ python3 data_generator.py }'
+``` 
+python3 data_generator.py
+```
+
