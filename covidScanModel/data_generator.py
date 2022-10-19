@@ -3,6 +3,7 @@ Split data into positive and negative classes
 """
 import torchxrayvision as xrv
 import os
+import sys
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
@@ -10,6 +11,8 @@ import pandas as pd
 
 
 DATA_DIR_PATH = "/storage/yirans/chestxray/covid-chestxray-dataset"
+DEFAULT_TARGET_PATH = "/storage/yirans/chestxray/training_data_dir"
+IMG_EXT=".jpg"
 COVID_LABEl_IDX = 3
 IMG_DIM = 128
 
@@ -65,16 +68,17 @@ def main():
     negative_scans = [process_scan(path) for path in negative_scan_paths]
 
     # store locally
-    positive_dir = "CovidScanData/positive"
-    negative_dir = "CovidScanData/negative"
+    positive_dir = os.path.join(DEFAULT_TARGET_PATH, "CovidScanData/positive")
+    negative_dir = os.path.join(DEFAULT_TARGET_PATH, "CovidScanData/negative")
 
     for i, im in enumerate(positive_scans):
-        fpath = os.path.join(positive_dir, "pos_"+str(i).zfill(3)+".png")
+        fpath = os.path.join(positive_dir, "pos_"+str(i).zfill(3)+IMG_EXT)
         im.save(fpath)
     for i, im in enumerate(negative_scans):
-        fpath = os.path.join(negative_dir, "pos_"+str(i).zfill(3)+".png")
+        fpath = os.path.join(negative_dir, "pos_"+str(i).zfill(3)+IMG_EXT)
         im.save(fpath)
     print(f"COVID samples: {len(positive_scan_paths)}, Non-COVID samples: {len(negative_scan_paths)}")
+    print(f"Processed data stored at {DEFAULT_TARGET_PATH}")
 
 
 if __name__ == "__main__":
