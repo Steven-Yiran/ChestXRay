@@ -1,2 +1,4 @@
-# Chest X-Ray Diagnosis Webapp
-## team member: Steven & Luka
+To run model training sequnece:
+> python3 model.py
+To run data generation pipeline:
+> python3 data_generator.py
