@@ -20,3 +20,12 @@ Oct 1st
 Oct 5th
 1. fixed css not render bugs
 2. added routes files and router imports
+
+Oct 14th
+- Integrated Tensorflow's mobilenet, a off-the-shelf model, into our program
+- Cleaned the Chest X-Ray dataset for training.
+
+Oct 15th
+- Added display to view Model Predictions
+- Identified what paper to present on
+- Updated plan on Clickup
