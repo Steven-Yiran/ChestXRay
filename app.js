@@ -22,3 +22,7 @@ app.use(require("./routes"));
 app.listen(3000, () => {
   console.log("The server started running on port 3000") 
 });
+
+// app.use(function(req, res) {
+//   res.status(404).send({url: req.originalUrl + ' not found'})
+// });

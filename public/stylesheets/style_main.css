@@ -1,15 +1,24 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 .header {
-    padding: 80px;
-    text-align: center;
-    background: #1abc9c;
-    color: black;
+  padding: 80px;
+  text-align: left;
+  background: rgb(20,20,20);
+  /*color: black;*/
 }
 
 .header h1{
-    font-size: 40px;
+  color: white;
+  font-size: 75px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.header h2{
+  color: #1abc9c;
+  font-size: 30px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  opacity: 80%;
 }
 
 /* Style the top navigation bar */
@@ -28,21 +37,22 @@ body {
   text-decoration: none; /* Remove underline */
 }
 
-/* Right-aligned link */
+/* Right-aligned link
 .navbar a.right {
-  float: right; /* Float a link to the right */
+  float: right; Float a link to the right 
 }
 
-/* Change color on hover/mouse-over */
+Change color on hover/mouse-over 
 .navbar a:hover {
-  background-color: #ddd; /* Grey background color */
-  color: black; /* Black text color */
+  background-color: #ddd;  Grey background color 
+  color: black;  Black text color 
 }
-
+*/
 /* Ensure proper sizing */
 * {
   box-sizing: border-box;
 }
+
 
 /* Column container */
 .row {
@@ -54,29 +64,25 @@ body {
 /* Create two unequal columns that sits next to each other */
 /* Sidebar/left column */
 .side {
+  color: white;
+  font-size: 20px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
   flex: 30%; /* Set the width of the sidebar */
-  background-color: #f1f1f1; /* Grey background color */
+  background-color: #303030; /* Grey background color */
   padding: 20px; /* Some padding */
-}
-
-/* Create a box to surround the diagnosis information within the sidebar */
-.boxed {
-  flex: 30%;
-  border: 1px solid black;
-  padding: 15px;
 }
 
 /* Main column */
 .main {
   flex: 70%; /* Set the width of the main content */
-  background-color: white; /* White background color */
+  background-color: #16a084; /* White background color */
   padding: 20px; /* Some padding */
 }
 
 .footer {
   padding: 20px; /* Some padding */
   text-align: center; /* Center text*/
-  background: #ddd; /* Grey background */
+  background: #0b5243; /* Grey background */
   font-size: 10px;
 }
 

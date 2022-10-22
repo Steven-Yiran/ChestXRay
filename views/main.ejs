@@ -5,27 +5,22 @@
 <title>Chest X-Ray Project</title>
 <meta charset="UTF-8">
 <meta name="Viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="/stylesheets/styles.css" />
+<link rel="stylesheet" href="/stylesheets/style_main.css" />
 </head>
 
 <body>
 
     <div class="header">
-        <h1>Chest X-Ray AI Diagnosis App</h1>
-    </div>
-
-
-    <div class="navbar">
-        <a href="/about" class="right">About</a>
+        <h1 class = "left">CS701 Senior Project</h1>
+        <h2 class = "left"> by Steven Shi and Luka Becerra</h2>
+        <a href="/menu" class="right">Menu</a>
     </div>
     
 
     <div class="row">
         <div class="side">
-            <div class = "boxed">
-                <p>Diagnosis Info display</p>
-                <p id="diag_info"> Diagnosis information will be displayed here...</p>
-            </div>
+            <p>Diagnosis Info display</p>
+            <p id="diag_info"> Diagnosis information will be displayed here...</p>
         </div>
         <div class="main">
             <div class="upload-div">
@@ -49,6 +44,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.1"> </script>
     <!-- Load the MobileNet model. -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0"> </script>
-    <script src="script.js"></script>
+    <script src="script_main.js"></script>
 </body>
 </html>
