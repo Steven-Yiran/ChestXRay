@@ -21,6 +21,13 @@ body {
   opacity: 80%;
 }
 
+.menu-icon {
+  color: white;
+  font-size: 20px;
+  float: right;
+  text-decoration: none;
+}
+
 /* Style the top navigation bar */
 .navbar {
   overflow: hidden; /* Hide overflow */

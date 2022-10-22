@@ -29,3 +29,10 @@ Oct 15th
 - Added display to view Model Predictions
 - Identified what paper to present on
 - Updated plan on Clickup
+
+Oct 22nd
+- Redesigned front end ordering by adding a menu page to select other pages to go to.
+- created paralex effect for menu page and added routes for additional pages
+- created style sheets for each page.
+- editted the main model page.
+- set it so the website opens on the menu page.

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-    res.redirect("/main");
+    res.redirect("/menu");
 });
 
 router.get("/main", (req, res) => {

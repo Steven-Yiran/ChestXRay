@@ -106,11 +106,11 @@ body {
 
 /* Moves with the mouse hover over menu items creates paralax effect with the background pattern*/
 #menu[data-active-index="0"] > #menu-background-image {
-    background-position:  45%;
+    background-position:  35%;
 }
 
 #menu[data-active-index="1"] > #menu-background-image {
-    background-position:  50%;
+    background-position:  45%;
 }
 
 #menu[data-active-index="2"] > #menu-background-image {
@@ -118,5 +118,5 @@ body {
 }
 
 #menu[data-active-index="3"] > #menu-background-iamge {
-    background-position:  60%;
+    background-position:  65%;
 }
