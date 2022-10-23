@@ -36,3 +36,4 @@ Oct 22nd
 - created style sheets for each page.
 - editted the main model page.
 - set it so the website opens on the menu page.
+- Trained basic ml model.

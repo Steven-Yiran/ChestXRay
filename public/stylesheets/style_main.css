@@ -86,6 +86,10 @@ Change color on hover/mouse-over
   padding: 20px; /* Some padding */
 }
 
+.image-display img{
+  width: 30%;
+}
+
 .footer {
   padding: 20px; /* Some padding */
   text-align: center; /* Center text*/

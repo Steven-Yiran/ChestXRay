@@ -1,9 +1,7 @@
 // Requiring module
-var http = require('http'),
-    path = require('path'),
-    express = require('express'),
-    fs = require("fs");
-    bodyParser = require('body-parser');
+var express = require('express'),
+    bodyParser = require('body-parser'),
+    tf = require('@tensorflow/tfjs-node');
 
 // create global app project
 var app = express();
@@ -18,11 +16,13 @@ app.use(express.json());
 
 app.use(require("./routes"));
 
+// 404 error handeling
+app.use(function(req, res) {
+  res.status(404).send({url: req.originalUrl + ' not found'})
+});
+
 // Server setup
 app.listen(3000, () => {
   console.log("The server started running on port 3000") 
 });
 
-// app.use(function(req, res) {
-//   res.status(404).send({url: req.originalUrl + ' not found'})
-// });
