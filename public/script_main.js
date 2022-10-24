@@ -1,12 +1,10 @@
 //for running events and functions
-const fileSelector = document.getElementById('img-selector');
+const fileSelector = document.getElementById('input-image');
 const output = document.getElementById('output');
 const diagOutput = document.getElementById("diag_info");
 
-const mobilenet = require('@tensorflow-models/mobilenet');
-
 fileSelector.addEventListener('change', async event => {
-    output.src = '';
+  output.src = '';
     const image = event.target.files[0];
 
     const reader = new FileReader();
