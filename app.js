@@ -23,7 +23,7 @@ app.use(function(req, res) {
 });
 
 // Server setup
-app.listen(3000, () => {
-  console.log("The server started running on port 3000") 
+app.listen(8080, () => {
+  console.log("The server started running on port 8080") 
 });
 
