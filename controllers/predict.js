@@ -2,7 +2,7 @@ const tfnode = require('@tensorflow/tfjs-node');
 const jimp = require('jimp');
 const sharp = require('sharp');
 const fs = require('fs')
-const {XRayClassifier} = require('./xray_classifier');
+const {classify} = require('./xray_classifier');
 
 
 async function prepareImage(imagePath) {
@@ -52,12 +52,12 @@ class InferenceController {
                     const imageBuffer = outputBuffer;
                     const imageTensor = tfnode.node.decodeImage(imageBuffer);
                     const imageTensorFloat = tfnode.cast(imageTensor, 'float32');
-                    const classNameAndProbs = this.classifier.classify(imageTensorFloat);
+                    const imageTensorExpand = imageTensorFloat.expandDims(0)
+                    const classProbs = this.classifier.classify(imageTensorExpand);
                 });
 
             // Tensorflow.js memory cleanup
-
-            return res.send("predict finished") // send back a template view instead
+            return res.send("NULL") // send back a template view instead
         } catch (error) {
             console.log(error);
             return res.send(`Error when trying to run predict on images: ${error}`);
@@ -65,9 +65,39 @@ class InferenceController {
     }
 }
 
-const xrayClassifier = new XRayClassifier();
-const inferenceController = new InferenceController(xrayClassifier);
+//const xrayClassifier = new XRayClassifier();
+//const inferenceController = new InferenceController(xrayClassifier);
+
+const runInference = async (req, res) => {
+    try {
+        if (req.file == undefined) {
+            return res.send("You must select an image for inference");
+        }
+        let imageTensorExpand = null;
+        // Read the content of the xray image as tensors with dimensions
+        // that match the requirement of the image classifier   
+        await sharp(req.file.path)
+            .resize(128, 128)
+            .grayscale()
+            .toColourspace('b-w')
+            .toBuffer()
+            .then((outputBuffer) => {
+                const imageBuffer = outputBuffer;
+                const imageTensor = tfnode.node.decodeImage(imageBuffer);
+                const imageTensorFloat = tfnode.cast(imageTensor, 'float32');
+                imageTensorExpand = imageTensorFloat.expandDims(0)
+            });
+
+        const classProbs = await classify(imageTensorExpand);
+        res.send(`Probability of COVID-19: ${classProbs}`);
+
+        // Tensorflow.js memory cleanup
+        return res.send("NULL") // send back a template view instead
+    } catch (error) {
+        console.log(`Error when trying to run predict on images: ${error}`)
+    }
+}
 
 module.exports = {
-    inferenceController,
+    runInference,
 };
