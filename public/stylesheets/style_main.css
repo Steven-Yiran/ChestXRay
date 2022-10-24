@@ -1,31 +1,108 @@
+:root {
+  --bg-color: #303030;
+  --menu-trans-time: 700ms;
+}
+
 body {
+  background-color: var(--bg-color);
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
 .header {
-  padding: 80px;
-  text-align: left;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 70px;
   background: rgb(20,20,20);
-  /*color: black;*/
+}
+
+.title {
+  text-align: left;
 }
 
 .header h1{
   color: white;
   font-size: 75px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .header h2{
   color: #1abc9c;
   font-size: 30px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
   opacity: 80%;
 }
 
-.menu-icon {
-  color: white;
-  font-size: 20px;
-  float: right;
+.menu {
+text-align: right;
+}
+
+.menu-link {
   text-decoration: none;
+}
+
+.menu-btn {
+  display: inline-flex;
+  padding: 0;
+  font-size: 20px;
+  background: 0 0;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.menu-label {
+  grid-column: 1;
+  font: inherit;
+  margin-right: 35px;
+  color: white;
+
+  transition: opacity var(--menu-trans-time),
+    transform var(--menu-trans-time);
+}
+
+/* .menu-icon */
+.menu-icon {
+  grid-column: 2;
+  top: 0rem;
+  right: 0;
+  width: 1.625rem;
+  height: 1.625rem;
+  border: 0.0625rem solid #fff;
+  transform: rotate(45deg);
+  position: absolute;
+
+  transition: opacity var(--menu-trans-time),
+    transform var(--menu-trans-time);
+}
+
+.menu-icon-inner {
+  grid-column: 2;
+  top: 0rem;
+  right: 0;
+  width: 1.625rem;
+  height: 1.625rem;
+  border: 0.0625rem solid #fff;
+  background-color: transparent;
+  transform: rotate(45deg);
+  position: absolute;
+
+  transition: opacity var(--menu-trans-time),
+    transform var(--menu-trans-time),
+    background-color var(--menu-trans-time);
+}
+
+.menu-btn:hover > .menu-label {
+  opacity: 0.2;
+  transform: translate(-30%, 0px);
+}
+
+.menu-btn:hover > .menu-icon {
+  opacity: 0.2;
+  transform: rotate(45deg) scale(2, 2);
+}
+
+.menu-btn:hover > .menu-icon-inner {
+  transform: rotate(45deg) scale(0.15, 0.15);
+  background-color: white;
 }
 
 /* Style the top navigation bar */

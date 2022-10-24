@@ -36,3 +36,6 @@ Oct 22nd
 - created style sheets for each page.
 - editted the main model page.
 - set it so the website opens on the menu page.
+
+Oct 23rd
+- worked on menu button for too long - finally got the ideal design down and added dynamic element
