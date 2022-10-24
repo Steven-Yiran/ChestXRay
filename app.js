@@ -1,7 +1,7 @@
 // Requiring module
 var express = require('express'),
     bodyParser = require('body-parser'),
-    tf = require('@tensorflow/tfjs-node');
+    {landingRouter, inferenceRouter} = require('./routes/routers');
 
 // create global app project
 var app = express();
@@ -14,7 +14,8 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 app.use(express.json());
 
-app.use(require("./routes"));
+app.use(landingRouter);
+app.use(inferenceRouter);
 
 // 404 error handeling
 app.use(function(req, res) {
