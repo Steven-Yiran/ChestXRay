@@ -1,26 +1,5 @@
 const tf = require('@tensorflow/tfjs-node');
-const jimp = require('jimp');
 const sharp = require('sharp');
-const fs = require('fs')
-const {classify} = require('./xray_classifier');
-const { isNullOrUndefined } = require('util');
-
-
-async function prepareImage(imagePath) {
-    try {
-        await sharp(imagePath).resize({
-            width: 128,
-            height: 128
-        })
-        .grayscale()
-        .toBuffer()
-        .then(function(imageBuffer) {
-            return imageBuffer;
-        });
-    } catch (error) {
-        console.error(error);
-    }
-}
 
 const MODEL_DIR_PATH = "resources/static/demo_savedmodel";
 
@@ -66,34 +45,7 @@ class InferenceController {
     }
 }
 
-//const xrayClassifier = new XRayClassifier();
 const inferenceController = new InferenceController();
-
-const runInference = async (req, res) => {
-    try {
-        if (req.file == undefined) {
-            return res.send("You must select an image for inference");
-        }
-        let imageTensor;
-        // Read the content of the xray image as tensors with dimensions
-        // that match the requirement of the image classifier   
-        await sharp(req.file.path)
-            .resize(128, 128)
-            .grayscale()
-            .toColourspace('b-w')
-            .toBuffer()
-            .then((outputBuffer) => {
-                const decodeTensor = tf.node.decodeImage(outputBuffer);
-                const imageTensor = tf.cast(decodeTensor, 'float32').expandDims(0);
-            });
-
-        const classProbs = await classify(imageTensor);
-        res.send(`Probability of COVID-19: ${classProbs}`);
-        // Tensorflow.js memory cleanup
-    } catch (error) {
-        console.log(`Error when trying to run predict on images: ${error}`)
-    }
-}
 
 module.exports = {
     inferenceController,
