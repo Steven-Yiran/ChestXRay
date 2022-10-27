@@ -40,3 +40,6 @@ Oct 22nd
 Oct 23rd
 - worked on menu button for too long - finally got the ideal design down and added dynamic element
 - Trained basic ml model.
+
+Oct 27th
+- model loading performance log: 1.029s, 100ms

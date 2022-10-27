@@ -1,5 +1,5 @@
 const express = require("express");
-const {runInference} = require("../controllers/predict")
+const {inferenceController} = require("../controllers/predict")
 const upload = require("../middleware/upload");
 
 const landingRouter = express.Router();
@@ -25,8 +25,7 @@ landingRouter.get("/about", (req, res) => {
 
 // router for predict
 const inferenceRouter = express.Router();
-
-inferenceRouter.post("/predict", upload.single('xray'), runInference)
+inferenceRouter.post("/predict", upload.single('image'), inferenceController.runInference);
 
 module.exports = {
     landingRouter,

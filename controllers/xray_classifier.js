@@ -8,8 +8,9 @@ classify = async (images) => {
     let probs = 0;
     await tf.node.loadSavedModel(MODEL_DIR_PATH).then((model) => {
         probs = model.predict(images);
+        const value = probs.arraySync()[0][0];
+        res.send(`Probability of COVID-19: ${value}`);
     })
-    return probs.arraySync();
 }
 
 module.exports = {
