@@ -1,1 +1,0 @@
-tensorflowjs_converter --input_format keras --output_format=tfjs_graph_model demo_chestxray.h5 jsmodels/tfjs_model
