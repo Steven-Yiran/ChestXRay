@@ -37,12 +37,12 @@
                 <input type="file" id="img-selector" name="image" accept=".jpg, .jpeg, .png">
                 <button onclick="predict()">Predict</button>
             </div> -->
-            <form class="mt" action="/predict" method="POST" enctype="multipart/form-data">
+            <form class="mt" id="img-frm" action="/predict" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <input type="file" name="image" id="input-image" accept=".jpg, .jpeg, .png">
                 </div>
-                <button type="submit" class="btn">Predict</button>
-                <button onclick="resetImage()">Reset</button>
+                <button class = "predict-btn" type="submit" class="btn">Predict</button>
+                <button class = "reset-btn" onclick="resetImage()">Reset</button>
             </form>
             <div class="img-display">
                 <img id="output">

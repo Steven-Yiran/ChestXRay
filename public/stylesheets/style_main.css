@@ -6,6 +6,7 @@
 body {
   background-color: var(--bg-color);
   font-family: Georgia, 'Times New Roman', Times, serif;
+  color: white;
 }
 .header {
   display: grid;
