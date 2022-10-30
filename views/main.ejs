@@ -33,13 +33,11 @@
             <p id="diag_info"> Diagnosis information will be displayed here...</p>
         </div>
         <div class="main">
-            <form class="mt" id="image-frm" enctype="multipart/form-data" action="#">
-                <div class="form-group">
-                    <input type="file" name="image" id="input-image" accept=".jpg, .jpeg, .png">
-                </div>
-                <button class="btn" onclick="postImage()">Predict</button>
-                <button onclick="resetImage()">Reset</button>
+            <form class="mt" id="image-frm">
+                <input type="file" name="image" id="input-image" accept=".jpg, .jpeg, .png">
+                <button type="submit">Submit</button>
             </form>
+            <button onclick="resetImage()">Reset</button>
             <div class="img-display">
                 <img id="output">
             </div>

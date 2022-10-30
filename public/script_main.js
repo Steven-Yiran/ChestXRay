@@ -5,7 +5,7 @@ const diagOutput = document.getElementById("diag_info");
 const formElement = document.getElementById("image-frm");
 
 // upload preview
-fileSelector.addEventListener('change', async event => {
+fileSelector.addEventListener('change', async (event) => {
   output.src = '';
     const image = event.target.files[0];
 
@@ -23,23 +23,39 @@ fileSelector.addEventListener('change', async event => {
 });
 
 
-// Based on:
-// https://stackoverflow.com/questions/46640024/how-do-i-post-form-data-with-fetch-api
 function postImage() {
-  const data = new URLSearchParams();
-  for (const pair of new FormData(formElement)) {
-    data.append(pair[0], pair[1]);
+  const XHR = new XMLHttpRequest();
+  const FD = new FormData(formElement);
+
+  // Define error behavior
+  XHR.addEventListener('error', (event) => {
+    alert('Oops! Something went wrong');
+  });
+
+  XHR.onreadystatechange = () => {
+
+    if (XHR.readyState === 4) {
+      // if successfully received response
+      const respond = XHR.response;
+      const body = JSON.parse(respond)
+      const resultClass = body.class === 1 ? 'POSITIVE' : 'NEGATIVE';
+      const resultProb = body.prob.toFixed(3);
+      const output = `Predicted covid ${resultClass} with probability ${resultProb}`;
+      diagOutput.innerHTML = output;
+    }
   }
-  console.log("here!");
-  console.log(data);
-  // const url = "/predict";
-  // const response = await fetch(url, {
-  //   method: 'post',
-  //   body: data,
-  // })
-  // const body = await response.json();
-  // console.log(body);
+
+  XHR.open('POST', '/predict');
+
+  XHR.send(FD);
 }
+
+
+// Based on:
+// https://developer.mozilla.org/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript#using_xmlhttprequest_and_the_formdata_object
+formElement.addEventListener("submit", (event) => {
+  postImage();
+});
 
 
 function resetImage() {
