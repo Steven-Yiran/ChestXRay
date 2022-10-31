@@ -43,3 +43,6 @@ Oct 23rd
 
 Oct 27th
 - model loading performance log: 1.029s, 100ms
+
+Oct 30th
+- display json file in main page

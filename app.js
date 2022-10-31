@@ -1,11 +1,14 @@
 // Requiring module
-var express = require('express'),
+const express = require('express'),
     bodyParser = require('body-parser'),
+    fs = require('fs'),
     path = require('path'),
+    {inferenceController} = require("./controllers/predict"),
     {landingRouter, inferenceRouter} = require('./routes/routers');
 
 
-const PORT = 8080;
+const port = 8080;
+const hostname = 'localhost'
 // create global app project
 var app = express();
 
@@ -14,8 +17,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // expose static resources
 app.use(express.static(path.join(__dirname, 'public')));
-//app.use(express.static(__dirname + '/views'));
-
 
 // Use ejs as template engine
 app.set('view engine', 'ejs');
@@ -30,7 +31,9 @@ app.use(function(req, res) {
 });
 
 // Server setup
-app.listen(PORT, () => {
-  console.log(`The server started running on port ${PORT}`) 
+app.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}`);
+  // load inference model for prediction
+  inferenceController.ensureModelLoaded();
 });
 
