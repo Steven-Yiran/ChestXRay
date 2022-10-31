@@ -2,8 +2,10 @@
 const fileSelector = document.getElementById('input-image');
 const output = document.getElementById('output');
 const diagOutput = document.getElementById("diag_info");
+const formElement = document.getElementById("image-frm");
 
-fileSelector.addEventListener('change', async event => {
+// upload preview
+fileSelector.addEventListener('change', async (event) => {
   output.src = '';
     const image = event.target.files[0];
 
@@ -21,28 +23,42 @@ fileSelector.addEventListener('change', async event => {
 });
 
 
-function predict() {
-  // Load the model.
-  mobilenet.load().then(model => {
-    // Classify the image.
-    model.classify(output).then(predictions => {
-      console.log('Predictions:');
-      console.log(predictions);
-      res = "";
-      for (let val = 0; val < predictions.length; val++) {
-         res += predictions[val]["className"] + ": " + Number(predictions[val]["probability"].toPrecision(3)) + "\n";
-      }
-      diagOutput.innerHTML = res;
-    });
+function postImage() {
+  const XHR = new XMLHttpRequest();
+  const FD = new FormData(formElement);
+
+  // Define error behavior
+  XHR.addEventListener('error', (event) => {
+    alert('Oops! Something went wrong');
   });
+
+  XHR.onreadystatechange = () => {
+
+    if (XHR.readyState === 4) {
+      // if successfully received response
+      const respond = XHR.response;
+      const body = JSON.parse(respond)
+      const resultClass = body.class === 1 ? 'POSITIVE' : 'NEGATIVE';
+      const resultProb = body.prob.toFixed(3);
+      const output = `Predicted covid ${resultClass} with probability ${resultProb}`;
+      diagOutput.innerHTML = output;
+    }
+  }
+
+  XHR.open('POST', '/predict');
+
+  XHR.send(FD);
 }
+
+
+// Based on:
+// https://developer.mozilla.org/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript#using_xmlhttprequest_and_the_formdata_object
+formElement.addEventListener("submit", (event) => {
+  postImage();
+});
+
 
 function resetImage() {
   output.src = '';
   diagOutput.innerHTML = "Diagnosis information will be displayed here...";
 }
-
-/*
-tf.loadLayersModel("jsmodel/model.json").then(model => {
-	this._model = model;
-})*/

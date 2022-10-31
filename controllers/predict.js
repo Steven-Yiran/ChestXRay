@@ -2,6 +2,7 @@ const tf = require('@tensorflow/tfjs-node');
 const sharp = require('sharp');
 
 const MODEL_DIR_PATH = "resources/static/demo_savedmodel";
+const IMAGE_SIZE = 128;
 
 class InferenceController {
     constructor() {
@@ -13,7 +14,7 @@ class InferenceController {
     runInference = async (req, res) => {
         await this.ensureModelLoaded();
         const imageBuffer = await sharp(req.file.path)
-                    .resize(128, 128)
+                    .resize(IMAGE_SIZE, IMAGE_SIZE)
                     .grayscale()
                     .toColourspace('b-w')
                     .toBuffer()

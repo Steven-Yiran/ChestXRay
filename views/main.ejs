@@ -33,33 +33,21 @@
             <p id="diag_info"> Diagnosis information will be displayed here...</p>
         </div>
         <div class="main">
-            <!-- <div class="upload-div">
-                <input type="file" id="img-selector" name="image" accept=".jpg, .jpeg, .png">
-                <button onclick="predict()">Predict</button>
-            </div> -->
-            <form class="mt" id="img-frm" action="/predict" method="POST" enctype="multipart/form-data">
-                <div class="form-group">
-                    <input type="file" name="image" id="input-image" accept=".jpg, .jpeg, .png">
-                </div>
-                <button class = "predict-btn" type="submit" class="btn">Predict</button>
-                <button class = "reset-btn" onclick="resetImage()">Reset</button>
+            <form class="mt" id="image-frm">
+                <input type="file" name="image" id="input-image" accept=".jpg, .jpeg, .png">
+                <button type="submit">Submit</button>
             </form>
+            <button onclick="resetImage()">Reset</button>
             <div class="img-display">
                 <img id="output">
             </div>
             
         </div>
     </div>
-    <!-- Replace this with your image. Make sure CORS settings allow reading the image! -->
-    <!--<img id="img" src="cat.jpg"></img>-->
+
     <div class="footer">
         <h2>Footer</h2>
     </div> 
-    
-    <!-- Load TensorFlow.js. This is required to use MobileNet. -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.1"> </script>
-    <!-- Load the MobileNet model. -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0"> </script>
     <script src="script_main.js"></script>
 </body>
 </html>
