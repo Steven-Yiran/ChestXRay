@@ -7,8 +7,8 @@ const express = require('express'),
     {landingRouter, inferenceRouter} = require('./routes/routers');
 
 
-const port = 8080;
-const hostname = 'localhost'
+const port = 3000;
+const hostname = 'localhost';
 // create global app project
 var app = express();
 
