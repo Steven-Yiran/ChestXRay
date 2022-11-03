@@ -11,10 +11,12 @@
     "sharp": "^0.31.1"
   },
   "devDependencies": {
+    "jest": "^29.2.2",
     "nodemon": "^2.0.20"
   },
   "scripts": {
     "start": "nodemon ./bin/www",
+    "test": "jest",
     "devstart": "nodemon ./bin/www",
     "serverstart": "DEBUG=express-locallibrary-tutorial:* npm run devstart"
   }
