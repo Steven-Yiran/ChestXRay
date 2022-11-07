@@ -28,7 +28,7 @@ getModel = async () => {
 };
 
 //const MODEL_DIR_PATH = "resources/static/demo_savedmodel";
-const MODEL_DIR_PATH = "resources/static/Xception";
+const MODEL_DIR_PATH = "resources/static/demo_savedmodel";
 const IMAGE_SIZE = 299; //128
 
 class InferenceController {
