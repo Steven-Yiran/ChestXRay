@@ -1,9 +1,35 @@
 const tf = require('@tensorflow/tfjs-node');
 const sharp = require('sharp');
 const fs = require('fs');
+const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 
-const MODEL_DIR_PATH = "resources/static/demo_savedmodel";
-const IMAGE_SIZE = 128;
+// Set the AWS region
+const REGION = "us-east-1";
+// Create an Amazon S3 service client object
+const s3Client = new S3Client({
+    region:REGION,
+    credentials:{
+        accessKeyId:'AKIAYLKCDDCDYV552UFW',
+        secretAccessKey:'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',
+    }
+});
+
+const bucketParams = {
+    Bucket: "chestxray-models",
+    Key: "Xception",
+};
+
+getModel = async () => {
+    try {
+        const data = await s3Client.send(new GetObjectCommand(bucketParams));
+    } catch (err) {
+        console.log("Error", err);
+    }
+};
+
+//const MODEL_DIR_PATH = "resources/static/demo_savedmodel";
+const MODEL_DIR_PATH = "resources/static/Xception";
+const IMAGE_SIZE = 299; //128
 
 class InferenceController {
     constructor() {
@@ -19,8 +45,8 @@ class InferenceController {
         const imagePath = req.file.path;
         const imageBuffer = await sharp(imagePath)
                     .resize(IMAGE_SIZE, IMAGE_SIZE)
-                    .grayscale()
-                    .toColourspace('b-w')
+                    // .grayscale()
+                    // .toColourspace('b-w')
                     .toBuffer()
         // remove uploaded file
         fs.unlink(imagePath, (error) => {
@@ -36,6 +62,7 @@ class InferenceController {
             // use integer instead of floats
             const probsVal = Math.round(probs.arraySync()[0][0] * 100);
             const classVal = probsVal > 50 ? 1 : 0;
+            console.log(probsVal);
             // return result
             res.status(200).json({
                 class : classVal,

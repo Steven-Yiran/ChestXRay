@@ -164,7 +164,7 @@ Change color on hover/mouse-over
   padding: 20px; /* Some padding */
 }
 
-.image-display img{
+#img-preview {
   width: 30%;
 }
 

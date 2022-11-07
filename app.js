@@ -31,8 +31,8 @@ app.use(function(req, res) {
 });
 
 // Server setup
-app.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}`);
+app.listen(port, () => {
+  console.log(`Server running at port ${port}`);
   // load inference model for prediction
   inferenceController.ensureModelLoaded();
 });

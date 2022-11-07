@@ -22,7 +22,8 @@ fileSelector.addEventListener('change', async (event) => {
     reader.readAsDataURL(image);
 });
 
-
+// Based on:
+// https://developer.mozilla.org/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript#using_xmlhttprequest_and_the_formdata_object
 function postImage() {
   const XHR = new XMLHttpRequest();
   const FD = new FormData(formElement);
@@ -49,13 +50,6 @@ function postImage() {
 
   XHR.send(FD);
 }
-
-
-// Based on:
-// https://developer.mozilla.org/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript#using_xmlhttprequest_and_the_formdata_object
-formElement.addEventListener("submit", (event) => {
-  postImage();
-});
 
 
 function resetImage() {
