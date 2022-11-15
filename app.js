@@ -4,11 +4,9 @@ const express = require('express'),
     fs = require('fs'),
     path = require('path'),
     {inferenceController} = require("./controllers/predict"),
-    {landingRouter, inferenceRouter} = require('./routes/routers');
+    {landingRouter} = require('./routes/clients'),
+    {inferenceRouter} = require('./routes/prediction');
 
-
-const port = 3000;
-const hostname = 'localhost';
 // create global app project
 var app = express();
 
@@ -30,10 +28,11 @@ app.use(function(req, res) {
   res.status(404).send({url: req.originalUrl + ' not found'})
 });
 
-// Server setup
+// load inference model for prediction
+inferenceController.ensureModelLoaded();
+
+
+const port = process.env.port || 3000;
 app.listen(port, () => {
   console.log(`Server running at port ${port}`);
-  // load inference model for prediction
-  inferenceController.ensureModelLoaded();
 });
-
