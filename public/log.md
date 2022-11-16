@@ -46,3 +46,7 @@ Oct 27th
 
 Oct 30th
 - display json file in main page
+
+Nov 16th
+(Luka)
+- Cleaned up the about page within the style sheet
