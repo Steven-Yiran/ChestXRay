@@ -18,62 +18,62 @@ class InferenceController {
     // Based on searchFromFiles in:
     // https://github.com/tensorflow/tfjs-examples/blob/master/electron/image_classifier.js
     runInference = async (req, res) => {
-        console.time("running inference");
-        await this.ensureModelLoaded();
-        
-        const imagePath = req.file.path;
-        const imageBuffer = await sharp(imagePath)
-                    .resize(IMAGE_SIZE, IMAGE_SIZE)
-                    //.grayscale()
-                    .toBuffer()
-        // remove uploaded file
-        fs.unlink(imagePath, (error) => {
-            if (error) console.log(error);
-        });
-        return tf.tidy(() => {
-            // decode buffer to image tenser
-            const decodeTensor = tf.node.decodeImage(imageBuffer);
-            // convert tensortype to float and append additional dimension
-            const imageTensor = tf.cast(decodeTensor, 'float32').expandDims(0);
-            // predict with model
-            try {
+        let data = {success : false};
+        try {
+            console.time("running inference");
+            await this.ensureModelLoaded();
+            
+            const imagePath = req.file.path;
+            const imageBuffer = await sharp(imagePath)
+                        .resize(IMAGE_SIZE, IMAGE_SIZE)
+                        //.grayscale()
+                        .toBuffer()
+            // remove uploaded file
+            fs.unlink(imagePath, (error) => {
+                if (error) console.log(error);
+            });
+            // tf.tidy() prevent memory leaks.
+            tf.tidy(() => {
+                // decode buffer to image tenser
+                const decodeTensor = tf.node.decodeImage(imageBuffer);
+                // convert tensortype to float and append additional dimension
+                const imageTensor = tf.cast(decodeTensor, 'float32').expandDims(0);
+                // predict with model
                 const probs = this.model.predict(imageTensor);
+                data["prob"] = probs.arraySync()[0][0];
                 // use integer instead of floats
                 const probsVal = Math.round(probs.arraySync()[0][0] * 100);
-                const classVal = probsVal > 50 ? 1 : 0;
+                data["class"] = probsVal > 50 ? 1 : 0;
                 // return result as json
-                res.status(200).json({
-                    class : classVal,
-                    prob : probs.arraySync()[0][0],
-                    success : true,
-                });
+                data["success"] = true;
+                res.status(200).json(data);
                 console.timeEnd("running inference");
-            } catch (error) {
-                console.error(error);
-                res.status(404).send("Model inference error");
-            }
-        })
+            })
+        } catch (err) {
+            console.error(error);
+            res.status(404).json(data);
+        }
     }
 
     // Based on ensureModelLoaded in:
     // https://github.com/tensorflow/tfjs-examples/blob/master/electron/image_classifier.js
     ensureModelLoaded = async () => {
-        if (this.model == null) {
-            if (!fs.existsSync(MODEL_DIR_PATH)) {
-                // get model from google cloud
-                await this.downloadModel();
-                const cwd = path.join(__dirname, "..");
-                const archivePath = path.join(cwd, 'resources/Xception.zip');
-                await this.extractModelArchive(archivePath)
-            }
-            try {
+        try {
+            if (this.model == null) {
+                if (!fs.existsSync(MODEL_DIR_PATH)) {
+                    // get model from google cloud
+                    await this.downloadModel();
+                    const cwd = path.join(__dirname, "..");
+                    const archivePath = path.join(cwd, 'resources/Xception.zip');
+                    await this.extractModelArchive(archivePath)
+                }
                 console.log('Loading image classifier model...');
                 console.time('Model loaded');
                 this.model = await tf.node.loadSavedModel(MODEL_DIR_PATH);
                 console.timeEnd('Model loaded');
-            } catch (error) {
-                console.log(error);
             }
+        } catch (error) {
+            console.log(error);
         }
     }
 
