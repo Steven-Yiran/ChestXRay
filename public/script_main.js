@@ -15,9 +15,6 @@ function displayImage(event) {
 
   reader.addEventListener('load', event => {
     imgPreview.src = event.target.result;
-    // imgPreview.onload = () => {
-    //   console.log("Processing " + image.name);
-    // }
   });
 
   reader.readAsDataURL(image);
@@ -34,7 +31,7 @@ function updateInfo(json) {
     const output = `Predicted covid ${resultClass} with probability ${resultProb}`;
     // display results
     diagOutput.innerHTML = output;
-    checkBoxField.style.display = "block";
+    //checkBoxField.style.display = "block";
   } else {
     diagOutput.innerHTML = "Request Failed";
   }
@@ -70,8 +67,7 @@ resetButton.addEventListener('click', () => {
 
 checkBox.addEventListener('change', () => {
   if (checkBox.checked) {
-    keyInputField.style.display = "block";
-    console.log(fileSelector.files[0].name);
+    //keyInputField.style.display = "block";
   } else {
     keyInputField.style.display = "none";
   }

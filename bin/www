@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+
+//start off model server and web app
+
+const app = require("../app");
+const model = require("../model_server")

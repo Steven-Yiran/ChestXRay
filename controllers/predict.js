@@ -1,79 +1,106 @@
 const tf = require('@tensorflow/tfjs-node');
 const sharp = require('sharp');
+const redis = require('redis');
 const fs = require('fs');
 const path = require('path');
 const AdmZip = require('adm-zip');
-const {Storage} = require('@google-cloud/storage')
+const uuid = require('uuid');
+const {Storage} = require('@google-cloud/storage');
 
 const MODEL_DIR_PATH = "resources/static/Xception";
 const IMAGE_SIZE = 299; //128
 // const MODEL_DIR_PATH = "resources/static/demo_savedmodel";
 // const IMAGE_SIZE = 128;
 
+async function encodeImage(imagePath) {
+    const imageBuffer = await sharp(imagePath)
+    .resize(IMAGE_SIZE, IMAGE_SIZE)
+    .toBuffer();
+    // remove uploaded file
+    fs.unlink(imagePath, (error) => {
+        if (error) console.log(error);
+    });
+    const pixelArray = new Uint8ClampedArray(imageBuffer);
+    const pixelEncoded = pixelArray.toString();
+    return pixelEncoded;
+}
+
+
+// https://www.sitepoint.com/delay-sleep-pause-wait/
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 class InferenceController {
     constructor() {
         this.model = null;
+        this.redisClient = null;
     }
 
-    // Based on searchFromFiles in:
-    // https://github.com/tensorflow/tfjs-examples/blob/master/electron/image_classifier.js
+    // endpoint /predict
     runInference = async (req, res) => {
+        // initialize the data dictionary that will be returned
         let data = {success : false};
         try {
-            console.time("running inference");
-            await this.ensureModelLoaded();
+            // read the image and encode it to a string
+            if (req.file == undefined) {
+                throw 'Image not attached';
+            }
+            // encode image for classification
+            const pixelEncoded = await encodeImage(req.file.path);
             
-            const imagePath = req.file.path;
-            const imageBuffer = await sharp(imagePath)
-                        .resize(IMAGE_SIZE, IMAGE_SIZE)
-                        //.grayscale()
-                        .toBuffer()
-            // remove uploaded file
-            fs.unlink(imagePath, (error) => {
-                if (error) console.log(error);
-            });
-            // tf.tidy() prevent memory leaks.
-            tf.tidy(() => {
-                // decode buffer to image tenser
-                const decodeTensor = tf.node.decodeImage(imageBuffer);
-                // convert tensortype to float and append additional dimension
-                const imageTensor = tf.cast(decodeTensor, 'float32').expandDims(0);
-                // predict with model
-                const probs = this.model.predict(imageTensor);
-                data["prob"] = probs.arraySync()[0][0];
-                // use integer instead of floats
-                const probsVal = Math.round(probs.arraySync()[0][0] * 100);
-                data["class"] = probsVal > 50 ? 1 : 0;
-                // return result as json
-                data["success"] = true;
-                res.status(200).json(data);
-                console.timeEnd("running inference");
-            })
-        } catch (err) {
-            console.error(error);
+            // generate an ID for the classification task then add
+            // the ID + image to the queue
+            const key = String(uuid.v4())
+            const keyImagePair = {
+                id : key,
+                image : pixelEncoded
+            };
+            this.redisClient.rPush("queue:image", JSON.stringify(keyImagePair));
+            
+            // keep looping until model server returns the output predictions
+            while (true) {
+                
+                // attempt to grab the prediction
+                const output = await this.redisClient.get(key);
+
+                if (output != null) {
+                    const res = JSON.parse(output);
+                    data = Object.assign({}, data, res);
+                    this.redisClient.del(key);
+                    break;
+                }
+                // client sleep for a small amount
+                await sleep(1000)
+            }
+
+            data["success"] = true;
+            res.status(200).json(data);
+        } catch (error) {
+            console.log(`Error : ${error}`);
             res.status(404).json(data);
         }
     }
 
-    // Based on ensureModelLoaded in:
-    // https://github.com/tensorflow/tfjs-examples/blob/master/electron/image_classifier.js
-    ensureModelLoaded = async () => {
+
+    ensureRedisLoaded = async () => {
         try {
-            if (this.model == null) {
-                if (!fs.existsSync(MODEL_DIR_PATH)) {
-                    // get model from google cloud
-                    await this.downloadModel();
-                    const cwd = path.join(__dirname, "..");
-                    const archivePath = path.join(cwd, 'resources/Xception.zip');
-                    await this.extractModelArchive(archivePath)
-                }
-                console.log('Loading image classifier model...');
-                console.time('Model loaded');
-                this.model = await tf.node.loadSavedModel(MODEL_DIR_PATH);
-                console.timeEnd('Model loaded');
-            }
-        } catch (error) {
-            console.log(error);
+            const redisClient = redis.createClient();
+
+            redisClient.on("error", (err) => {
+            console.log(`Error : ${err}`);
+            });
+
+            redisClient.on("connect", () => {
+            console.log('Redis server connected!');
+            });
+
+            (async () => {
+                await redisClient.connect();
+            })();
+            this.redisClient = redisClient
+        } catch (err) {
+            console.log(`Error : ${err}`);
         }
     }
 

@@ -6,4 +6,6 @@ test('check model is not null', async () => {
     expect(inferenceController.model).not.toBeNull();
 })
 
+
+
 // write an unit test on post api
