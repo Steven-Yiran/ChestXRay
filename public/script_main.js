@@ -1,58 +1,74 @@
 //for running events and functions
 const fileSelector = document.getElementById('input-image');
-const output = document.getElementById('output');
-const diagOutput = document.getElementById("diag_info");
+const imgPreview = document.getElementById('img-preview');
+const diagOutput = document.getElementById("diag-info");
 const formElement = document.getElementById("image-frm");
+const resetButton = document.getElementById("reset-btn");
+const checkBoxField = document.getElementById("consent-area")
+const checkBox = document.getElementById("consent-box");
+const keyInputField = document.getElementById('id-input-area');
 
-// upload preview
-fileSelector.addEventListener('change', async (event) => {
-  output.src = '';
-    const image = event.target.files[0];
 
-    const reader = new FileReader();
+function displayImage(event) {
+  const image = event.target.files[0];
+  const reader = new FileReader();
 
-    reader.addEventListener('load', event => {
-      output.src = event.target.result;
-      
-      output.onload = g => {
-        console.log("Processing " + image.name);
-      }
-    });
-
-    reader.readAsDataURL(image);
-});
-
-// Based on:
-// https://developer.mozilla.org/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript#using_xmlhttprequest_and_the_formdata_object
-function postImage() {
-  const XHR = new XMLHttpRequest();
-  const FD = new FormData(formElement);
-
-  // Define error behavior
-  XHR.addEventListener('error', (event) => {
-    alert('Oops! Something went wrong');
+  reader.addEventListener('load', event => {
+    imgPreview.src = event.target.result;
   });
 
-  XHR.onreadystatechange = () => {
+  reader.readAsDataURL(image);
+}
 
-    if (XHR.readyState === 4) {
-      // if successfully received response
-      const respond = XHR.response;
-      const body = JSON.parse(respond)
-      const resultClass = body.class === 1 ? 'POSITIVE' : 'NEGATIVE';
-      const resultProb = body.prob.toFixed(3);
-      const output = `Predicted covid ${resultClass} with probability ${resultProb}`;
-      diagOutput.innerHTML = output;
-    }
+// upload preview
+fileSelector.addEventListener('change', displayImage);
+
+
+function updateInfo(json) {
+  if (json.success) {
+    const resultClass = json.class === 1 ? 'POSITIVE' : 'NEGATIVE';
+    const resultProb = json.prob.toFixed(3);
+    const output = `Predicted covid ${resultClass} with probability ${resultProb}`;
+    // display results
+    diagOutput.innerHTML = output;
+    //checkBoxField.style.display = "block";
+  } else {
+    diagOutput.innerHTML = "Request Failed";
   }
-
-  XHR.open('POST', '/predict');
-
-  XHR.send(FD);
 }
 
 
-function resetImage() {
-  output.src = '';
+function runInference() {
+  // force display preview
+  
+  const FD = new FormData(formElement);
+
+  const url = "/predict"
+  const options = {
+    body: FD, 
+    method: 'post'
+  }
+  // consume the prediction api
+  fetch(url, options)
+    .then(res => res.json())
+    .then(updateInfo)
+    .catch(err => console.error('error:' + err));
+}
+
+
+resetButton.addEventListener('click', () => {
+  imgPreview.src = '';
   diagOutput.innerHTML = "Diagnosis information will be displayed here...";
-}
+  checkBox.checked = false;
+  checkBoxField.style.display = "none";
+  keyInputField.style.display = "none";
+})
+
+
+checkBox.addEventListener('change', () => {
+  if (checkBox.checked) {
+    //keyInputField.style.display = "block";
+  } else {
+    keyInputField.style.display = "none";
+  }
+})

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-<title>Chest X-Ray Project</title>
+<title>CovidXRay</title>
 <meta charset="UTF-8">
 <meta name="Viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="/stylesheets/style_main.css" />
@@ -12,8 +12,8 @@
 
     <div class="header">
         <div class = "title">
-            <h1>CS701 Senior Project</h1>
-            <h2>by Steven Shi and Luka Becerra</h2>
+            <h1>CovidXRay</h1>
+            <h2>AI COVID Diagnosis Assistant</h2>
         </div>
         <div class = "menu">
             <a href="/menu" class="menu-link">
@@ -30,23 +30,41 @@
     <div class="row">
         <div class="side">
             <p>Diagnosis Info display</p>
-            <p id="diag_info">Diagnosis information will be displayed here...</p>
+            <p id="diag-info">Diagnosis information will be displayed here...</p>
         </div>
         <div class="main">
-            <form class="mt" id="image-frm" enctype="multipart/form-data" action="#">
-                <input type="file" name="image" id="input-image" accept=".jpg, .jpeg, .png">
-            </form>
-            <button onclick="postImage()">Submit</button>
-            <button onclick="resetImage()">Reset</button>
-            <div class="img-display">
-                <img id="img-preview">
+            <div class="image-frm-area">
+                <form id="image-frm" enctype="multipart/form-data" action="#">
+                    <input type="reset" id="reset-btn" value="New Query">
+                    <br /><br />
+                    <input type="file" name="image" id="input-image" accept=".jpg, .jpeg, .png">
+                    <div class="img-display">
+                        <img id="img-preview">
+                    </div>
+                </form>
+                <button onclick="runInference()">Submit</button>
             </div>
-            
+            <div id="consent-area" style="display:none">
+                <fieldset>
+                    <legend>Donate Your Data for Research</legend>
+                    <input type="checkbox" id="consent-box" name="consent">
+                    <label for="consent">Donate</label>
+                </fieldset>
+            </div>
+            <br /><br />
+            <div id="id-input-area" style="display:none">
+                <form>
+                    <label for="key">Enter a unique identifier for your scan (Optional)</label>
+                    <input type="text" id="key" name="key" required minlength="4" maxlength="8">
+                    <br />
+                    <input type="submit">
+                </form>
+            </div>
         </div>
     </div>
 
     <div class="footer">
-        <h2>Footer</h2>
+        <%- include('./partials/footer'); %>
     </div> 
     <script src="script_main.js"></script>
 </body>

@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
+//start off model server and web app
 
 const app = require("../app");
+const model = require("../model_server")
