@@ -1,18 +1,17 @@
 const express = require("express");
-const {inferenceController} = require("../controllers/predict")
-const upload = require("../middleware/upload");
+
 
 const landingRouter = express.Router();
 landingRouter.get("/", (req, res) => {
     res.redirect("/menu");
 });
 
-landingRouter.get("/main", (req, res) => {
-    res.render("main");
-});
-
 landingRouter.get("/menu", (req, res) => {
     res.render("menu");
+});
+
+landingRouter.get("/main", (req, res) => {
+    res.render("main", {});
 });
 
 landingRouter.get("/account", (req, res) => {
@@ -23,11 +22,6 @@ landingRouter.get("/about", (req, res) => {
     res.render("about");
 });
 
-// router for predict
-const inferenceRouter = express.Router();
-inferenceRouter.post("/predict", upload.single('image'), inferenceController.runInference);
-
 module.exports = {
-    landingRouter,
-    inferenceRouter,
+    landingRouter
 };

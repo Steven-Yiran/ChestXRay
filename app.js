@@ -1,16 +1,13 @@
 // Requiring module
 const express = require('express'),
     bodyParser = require('body-parser'),
-    fs = require('fs'),
     path = require('path'),
     {inferenceController} = require("./controllers/predict"),
-    {landingRouter, inferenceRouter} = require('./routes/routers');
+    {landingRouter} = require('./routes/clients'),
+    {inferenceRouter} = require('./routes/prediction');
 
-
-const port = 3000;
-const hostname = 'localhost';
 // create global app project
-var app = express();
+const app = express();
 
 // normal express configs
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,10 +27,12 @@ app.use(function(req, res) {
   res.status(404).send({url: req.originalUrl + ' not found'})
 });
 
-// Server setup
-app.listen(port, () => {
-  console.log(`Server running at port ${port}`);
-  // load inference model for prediction
-  inferenceController.ensureModelLoaded();
-});
+// load inference model before starting server
+const port = process.env.port || 3000;
 
+inferenceController.ensureRedisLoaded()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server running at port ${port}`);
+    });
+  });

@@ -5,5 +5,5 @@
 const multer = require("multer");
 const UPLOAD_PATH = "resources/static/uploads/";
 
-var uploadImg = multer({ dest: UPLOAD_PATH })
+const uploadImg = multer({ dest: UPLOAD_PATH })
 module.exports = uploadImg;
