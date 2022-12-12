@@ -31,7 +31,7 @@ function updateInfo(json) {
     const output = `Predicted covid ${resultClass} with probability ${resultProb}`;
     // display results
     diagOutput.innerHTML = output;
-    //checkBoxField.style.display = "block";
+    checkBoxField.style.display = "block";
   } else {
     diagOutput.innerHTML = "Request Failed";
   }
@@ -67,7 +67,7 @@ resetButton.addEventListener('click', () => {
 
 checkBox.addEventListener('change', () => {
   if (checkBox.checked) {
-    //keyInputField.style.display = "block";
+    keyInputField.style.display = "block";
   } else {
     keyInputField.style.display = "none";
   }
