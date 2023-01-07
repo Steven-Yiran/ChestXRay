@@ -9,8 +9,8 @@ const {Storage} = require('@google-cloud/storage');
 
 const MODEL_DIR_PATH = "resources/static/Xception";
 const IMAGE_SIZE = 299; //128
-// const MODEL_DIR_PATH = "resources/static/demo_savedmodel";
-// const IMAGE_SIZE = 128;
+const TIME_SLEEP = 500;
+const TIME_LIM = 1000; // time limit
 
 async function encodeImage(imagePath) {
     const imageBuffer = await sharp(imagePath)
@@ -40,7 +40,12 @@ class InferenceController {
     // endpoint /predict
     runInference = async (req, res) => {
         // initialize the data dictionary that will be returned
-        let data = {success : false};
+        let data = {
+            success : false,
+            class : -1, // null default
+            prob : -1 // null default
+        };
+        let status_code = 408; // Timeout respond
         try {
             // read the image and encode it to a string
             if (req.file == undefined) {
@@ -59,23 +64,31 @@ class InferenceController {
             this.redisClient.rPush("queue:image", JSON.stringify(keyImagePair));
             
             // keep looping until model server returns the output predictions
-            while (true) {
-                
+            const start_time = Date.now()
+            // while process time within limit
+            while (Date.now() - start_time < TIME_LIM) {
+                var time_elapse = Date.now() - start_time;
+                if (time_elapse > TIME_LIM) {
+                    this.redisClient.del(key);
+                    break;
+                }
                 // attempt to grab the prediction
                 const output = await this.redisClient.get(key);
 
                 if (output != null) {
                     const res = JSON.parse(output);
-                    data = Object.assign({}, data, res);
+                    Object.assign(data, res);
                     this.redisClient.del(key);
+                    data["success"] = true;
+                    status_code = 200; // success
                     break;
                 }
                 // client sleep for a small amount
-                await sleep(1000)
+                await sleep(TIME_SLEEP);
             }
 
-            data["success"] = true;
-            res.status(200).json(data);
+            res.status(status_code).json(data);
+
         } catch (error) {
             console.log(`Error : ${error}`);
             res.status(404).json(data);
