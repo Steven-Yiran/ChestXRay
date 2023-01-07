@@ -23,8 +23,16 @@ async function ensureRedisConnect() {
 }
 
 
+// check if model exists
 async function ensureModelLoaded() {
     try {
+        console.log('Checking model file')
+        if (fs.existsSync(MODEL_DIR_PATH)) {
+            console.log('Model file exist');
+        } else {
+            console.log("Does not exists: ", MODEL_DIR_PATH);
+            throw new Error("File does not exist");
+        }
         console.log('Loading image classifier model...');
         console.time('Model loaded');
         if (!fs.existsSync(MODEL_DIR_PATH)) {
