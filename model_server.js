@@ -1,5 +1,6 @@
 const redis = require('redis');
 const tf = require('@tensorflow/tfjs-node');
+const fs = require('fs');
 
 const MODEL_DIR_PATH = "resources/static/Xception";
 const BATCH_SIZE = 5;
@@ -22,9 +23,16 @@ async function ensureRedisConnect() {
 }
 
 
-
+// check if model exists
 async function ensureModelLoaded() {
     try {
+        console.log('Checking model file')
+        if (fs.existsSync(MODEL_DIR_PATH)) {
+            console.log('Model file exist');
+        } else {
+            console.log("Does not exists: ", MODEL_DIR_PATH);
+            throw new Error("File does not exist");
+        }
         console.log('Loading image classifier model...');
         console.time('Model loaded');
         model = await tf.node.loadSavedModel(MODEL_DIR_PATH);
