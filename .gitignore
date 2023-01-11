@@ -1,4 +1,10 @@
 node_modules/
+
+.env
+.dockerignore
+.gitignore
+Dockerfile
+
 resources/static/Xception
 resources/.DS_Store
 resources/static/.DS_Store
