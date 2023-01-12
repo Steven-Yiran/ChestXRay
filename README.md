@@ -9,6 +9,26 @@ To achieve efficiency, we designed a message broker structure to give scalabilit
 
 ![system design](./public/design.png)
 
+# Scope/Scope:
+
+1. A high-accuracy deep learning model running on backend.
+2. Web-pages that serve as the default client.
+
+# Advantages:
+
+1. Backend scalable to multiple machines (webserver, Redis instance).
+2. Universally accessible model through public API. 
+3. User-friendly web interface.
+
+# Technologies Decisions:
+
+1. Designed an API that take X-Ray scan image as input and return model predictions.
+    1. Node, Express, TensorFlow, sharp
+2. Created a scalable backend using message queueing.
+    1. Redis
+3. Tested various components, automated testing.
+    1. Jest, Postman, Github
+
 # Main Dependencies
 Node.js
 Express
