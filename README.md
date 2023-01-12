@@ -9,18 +9,18 @@ To achieve efficiency, we designed a message broker structure to give scalabilit
 
 ![system design](./public/design.png)
 
-# Scope/Scope:
+## Scope/Scope:
 
 1. A high-accuracy deep learning model running on backend.
 2. Web-pages that serve as the default client.
 
-# Advantages:
+## Advantages:
 
 1. Backend scalable to multiple machines (webserver, Redis instance).
 2. Universally accessible model through public API. 
 3. User-friendly web interface.
 
-# Technologies Decisions:
+## Technologies Decisions:
 
 1. Designed an API that take X-Ray scan image as input and return model predictions.
     1. Node, Express, TensorFlow, sharp
@@ -29,13 +29,13 @@ To achieve efficiency, we designed a message broker structure to give scalabilit
 3. Tested various components, automated testing.
     1. Jest, Postman, Github
 
-# Main Dependencies
+## Main Dependencies
 Node.js
 Express
 Tensorflow js
 Chest x-ray prediction model saved at "./resources/static/<Model-Name>"
 
-# To Run:
+## To Run:
 1. start redis
 ```
 redis-server
